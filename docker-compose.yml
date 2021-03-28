@@ -8,19 +8,28 @@ networks:
                 - subnet: 10.2.0.0/24
 
 services:
+    unbound:
+        image: "mvance/unbound:latest"
+        container_name: unbound
+        restart: unless-stopped
+        hostname: "unbound"
+        volumes:
+            - "./unbound:/opt/unbound/etc/unbound/"
+        networks:
+            private_network:
+                ipv4_address: 10.2.0.200
+
     adguardhome:
         image: adguard/adguardhome
         container_name: adguardhome
         volumes:
             - ./adguard/workdir:/opt/adguardhome/work
             - ./adguard/conf:/opt/adguardhome/conf
-        ports:
-            - "127.0.0.1:53:53/udp"
-            - "127.0.0.1:53:53/tcp"
-            - "67:67/udp"
-            - '853:853/tcp'
         cap_add:
             - NET_ADMIN
+        dns:
+            - 127.0.0.1
+            - 10.2.0.200
         networks:
             private_network:
                 ipv4_address: 10.2.0.100
@@ -53,5 +62,3 @@ services:
         networks:
             private_network:
                 ipv4_address: 10.2.0.3
-
-
