@@ -47,7 +47,7 @@ services:
             - TZ=Europe/Berlin # Change to your timezone
             - SERVERPORT=51820
             - PEERS=15 # How many peers to generate for you (clients)
-            - PEERDNS=10.2.0.100 # Set it to point to pihole
+            - PEERDNS=10.2.0.100
             - INTERNAL_SUBNET=10.6.0.0
         volumes:
             - ./wireguard:/config
